@@ -71,7 +71,7 @@ class DisplayQRCodeDataActivity : AppCompatActivity() {
                         val nic : TextView = findViewById(R.id.nic)
                         val dat: TextView = findViewById(R.id.date)
                         val btnmark : Button = findViewById(R.id.mark)
-                        val btnback : Button = findViewById(R.id.scan)
+                        val btnback : LinearLayout = findViewById(R.id.linscan)
 
 
                         naem.text = name
@@ -83,20 +83,25 @@ class DisplayQRCodeDataActivity : AppCompatActivity() {
 
                         btnmark.setOnClickListener {
 
-                            val datesRef = userSnapshot.child("Travel date").child("Traveled")
+                            val datesRef = userSnapshot.child("Travel date")
                             val datesList = mutableListOf<String>()
-                            for (dateSnapshot in datesRef.children) {
+                            datesRef.children.forEach { dateSnapshot ->
                                 val date = dateSnapshot.getValue(String::class.java)
                                 date?.let { datesList.add(it) }
-
                             }
                             datesList.add(todayDate)
-                            userSnapshot.ref.child("Travel date").child("Traveled").setValue(datesList)
+                            val updatedDatesRef = userSnapshot.ref.child("Travel date")
+                            updatedDatesRef.removeValue()  // Remove the existing "Travel date" field
+                            datesList.forEach { date ->
+                                updatedDatesRef.push().setValue(date)  // Use push() to generate unique keys
+                            }
                             /*val newDataRef = traveledDateRef.push()
                             newDataRef.setValue("$currentDate")*/
 
                             btnmark.text="Date marked"
                             btnmark.isEnabled = false
+                            btnmark.setBackgroundColor(resources.getColor(R.color.button_clicked_color));
+
 
 
 

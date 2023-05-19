@@ -15,5 +15,12 @@
 
         <item name="android:background">@android:color/transparent</item>
         <item name="background">@android:color/transparent</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="Theme.Conductor_app.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Conductor_app.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
