@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 class Login : AppCompatActivity() {
 
@@ -17,6 +18,7 @@ class Login : AppCompatActivity() {
     lateinit var btnlog : Button
     private lateinit var auth: FirebaseAuth
     lateinit var reg : TextView
+    lateinit var forget: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +31,19 @@ class Login : AppCompatActivity() {
         lemail = findViewById(R.id.elog_email)
         lpassword = findViewById(R.id.elog_password)
         reg =  findViewById(R.id.reg)
+        forget = findViewById(R.id.forget)
 
         reg.setOnClickListener {
             val intent = Intent(this, Register::class.java)
             startActivity(intent)
         }
+
+
+        forget.setOnClickListener {
+            val intent = Intent(this, ForgetPassword::class.java)
+            startActivity(intent)
+        }
+
 
         btnlog.setOnClickListener {
             val email = lemail.text.toString()
@@ -52,6 +62,9 @@ class Login : AppCompatActivity() {
 
                         /*val sessionManager = SessionManager(this)
                         sessionManager.setLoggedIn(true)*/
+
+                        val databaseReference = FirebaseDatabase.getInstance().reference.child("users").child(uid)
+
 
                         val intent = Intent(this@Login, ScannerActivity::class.java)
                         startActivity(intent)
