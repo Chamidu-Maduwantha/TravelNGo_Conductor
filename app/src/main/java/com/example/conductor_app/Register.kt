@@ -91,6 +91,7 @@ class Register : AppCompatActivity() {
                 hashMap.put("userId",userId)
                 hashMap.put("username",userName)
                 hashMap.put("nic",nic)
+                hashMap.put("account","conductor")
 
 
                 databaseReference.setValue(hashMap).addOnCompleteListener (this){
