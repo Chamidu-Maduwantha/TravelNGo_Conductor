@@ -14,6 +14,9 @@
         android:theme="@style/Theme.Conductor_app"
         tools:targetApi="31">
         <activity
+            android:name=".Message"
+            android:exported="false" />
+        <activity
             android:name=".ForgetPassword"
             android:exported="false" />
         <activity
@@ -27,13 +30,13 @@
         </activity>
         <activity
             android:name=".Register"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".DisplayQRCodeDataActivity"
             android:exported="false" />
         <activity
             android:name=".ScannerActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true" />

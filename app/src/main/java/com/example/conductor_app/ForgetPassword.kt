@@ -1,9 +1,11 @@
 package com.example.conductor_app
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 
@@ -17,6 +19,12 @@ class ForgetPassword : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         val emailEditText = findViewById<EditText>(R.id.emailEditText)
+        val back = findViewById<TextView>(R.id.back)
+
+        back.setOnClickListener{
+            val intent = Intent(this,Login::class.java)
+            startActivity(intent)
+        }
 
         val resetButton: Button = findViewById(R.id.resetButton)
         resetButton.setOnClickListener {

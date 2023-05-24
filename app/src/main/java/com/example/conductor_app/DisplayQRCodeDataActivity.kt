@@ -1,13 +1,16 @@
 package com.example.conductor_app
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.*
+import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -23,6 +26,7 @@ class DisplayQRCodeDataActivity : AppCompatActivity() {
 
 
     private lateinit var profileImage: ImageView
+    private lateinit var dialog: Dialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +37,7 @@ class DisplayQRCodeDataActivity : AppCompatActivity() {
 
         /*val resultTextView: TextView = findViewById(R.id.textViewUsername)
         resultTextView.text = qrCodeResult*/
+
 
 
         val searchText = qrCodeResult
@@ -66,17 +71,28 @@ class DisplayQRCodeDataActivity : AppCompatActivity() {
 
                         val name = user?.username
                         val NIC = user?.NIC
+                        val From= user?.from
+                        val To = user?.to
+                        val type = user?.passType
+                        val last = user?.LastTraveled
 
                         val naem: TextView = findViewById(R.id.name)
                         val nic : TextView = findViewById(R.id.nic)
                         val dat: TextView = findViewById(R.id.date)
                         val btnmark : Button = findViewById(R.id.mark)
                         val btnback : LinearLayout = findViewById(R.id.linscan)
+                        val medium : TextView= findViewById(R.id.medium)
+                        val to :TextView= findViewById(R.id.to)
+                        val from:TextView =findViewById(R.id.from)
+
 
 
                         naem.text = name
                         nic.text = NIC
                         dat.text = todayDate
+                        medium.text= type
+                        to.text = To
+                        from.text =From
 
 
 
@@ -92,15 +108,29 @@ class DisplayQRCodeDataActivity : AppCompatActivity() {
                             datesList.add(todayDate)
                             val updatedDatesRef = userSnapshot.ref.child("Travel date")
                             updatedDatesRef.removeValue()  // Remove the existing "Travel date" field
-                            datesList.forEach { date ->
+                           datesList.forEach { date ->
                                 updatedDatesRef.push().setValue(date)  // Use push() to generate unique keys
                             }
                             /*val newDataRef = traveledDateRef.push()
                             newDataRef.setValue("$currentDate")*/
 
-                            btnmark.text="Date marked"
-                            btnmark.isEnabled = false
-                            btnmark.setBackgroundColor(resources.getColor(R.color.button_clicked_color));
+
+                            val lastTraveledDateRef = userSnapshot.ref.child("Travel date").child("LastTraveled")
+                            lastTraveledDateRef.setValue(todayDate)
+
+                            btnmark.setBackgroundColor(resources.getColor(R.color.button_clicked_color))
+                            btnmark.text="Scan another QR"
+
+
+                            btnmark.setOnClickListener {
+                                val intent = Intent(this@DisplayQRCodeDataActivity,ScannerActivity::class.java)
+                                startActivity(intent)
+
+                            }
+
+
+
+
 
 
 

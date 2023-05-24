@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
@@ -22,8 +23,8 @@ class Register : AppCompatActivity() {
     lateinit var remail: EditText
     lateinit var cpassword: EditText
     lateinit var nic : EditText
-    lateinit var birthday : EditText
-    lateinit var address : EditText
+    lateinit var checkbox : CheckBox
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -31,14 +32,14 @@ class Register : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         btnsign = findViewById(R.id.btnsign)
-        rname = findViewById(R.id.edtname)
         rpassword = findViewById(R.id.r_password)
         remail = findViewById(R.id.r_email)
         cpassword = findViewById(R.id.r_cpassword)
         nic = findViewById(R.id.nic)
+        checkbox = findViewById(R.id.chkbox)
 
         btnsign.setOnClickListener {
-            val userName = rname.text.toString()
+
             val email = remail.text.toString()
             val password = rpassword.text.toString()
             val comfirmpassword = cpassword.text.toString()
@@ -46,9 +47,7 @@ class Register : AppCompatActivity() {
 
 
 
-            if(TextUtils.isEmpty(userName)){
-                Toast.makeText(applicationContext,"username is required", Toast.LENGTH_SHORT).show()
-            }
+
 
             if(TextUtils.isEmpty(nic)){
                 Toast.makeText(applicationContext,"NIC is required", Toast.LENGTH_SHORT).show()
@@ -71,8 +70,12 @@ class Register : AppCompatActivity() {
 
             }
 
+            if (!checkbox.isChecked){
+                Toast.makeText(applicationContext,"You should agree to Terms and Conditions",Toast.LENGTH_SHORT).show()
+            }else{
+                registerUser(email, password,nic)
+            }
 
-            registerUser(userName, email, password,nic)
 
         }
 
@@ -80,7 +83,7 @@ class Register : AppCompatActivity() {
     }
 
 
-    private fun registerUser(userName:String, email:String, password:String, nic:String){
+    private fun registerUser(email:String, password:String, nic:String){
         auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this) {
             if(it.isSuccessful){
                 var user: FirebaseUser? = auth.currentUser
@@ -89,7 +92,6 @@ class Register : AppCompatActivity() {
 
                 var hashMap:HashMap<String,String> = HashMap()
                 hashMap.put("userId",userId)
-                hashMap.put("username",userName)
                 hashMap.put("nic",nic)
                 hashMap.put("account","conductor")
 
